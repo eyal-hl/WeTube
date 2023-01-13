@@ -14,8 +14,8 @@ const Topbar = (props) => (
 					height='25px'
 					style={{ marginRight: '8px' }}
 				/>
-				<span style={{ color: colors.primaryColor }}>RED</span>
-				&nbsp;PARTY
+				<span style={{ color: colors.primaryColor }}>We</span>
+				&nbsp;Tube
 			</StyledBar>
 		</Col>
 	</Row>
