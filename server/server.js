@@ -11,8 +11,8 @@ const io = require('socket.io')(server, {
 
 const PORT = process.env.PORT || 3005;
 
-app.get('/test', (req, res, next) => {
-	res.send({ message: 'Hello World' });
+app.get('/', (req, res, next) => {
+	res.send({ message: 'Running' });
 });
 
 ioUtils.setupIO(io);
