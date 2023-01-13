@@ -4,10 +4,12 @@ import { Visible } from 'react-grid-system';
 import Room from './components/Room/Room';
 import Welcome from './components/Welcome/Welcome';
 import Footer from './components/common/Footer';
+import Topbar from './components/common/Topbar';
 
 function Routes() {
 	return (
 		<Router>
+			<Topbar />
 			<div style={{ minHeight: '100%' }}>
 				<Switch>
 					<Route path='/' component={Welcome} exact />

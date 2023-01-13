@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col } from 'react-grid-system';
 import Swal from 'sweetalert2';
-import Topbar from '../common/Topbar';
 import Player from './Player';
 import Chat from './Chat/Chat';
 import Options from './Options';
@@ -113,7 +112,6 @@ function Room(props) {
 
 	return (
 		<React.Fragment>
-			<Topbar />
 			{roomLoading ? (
 				<Spinner />
 			) : (

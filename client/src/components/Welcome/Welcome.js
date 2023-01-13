@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { createConnection } from '../../utils/socket';
-import { Container, Row, Col, Hidden } from 'react-grid-system';
+import { Container, Row, Col } from 'react-grid-system';
 import styled from 'styled-components';
 import Topbar from '../common/Topbar';
 import StartForm from './StartForm';
-import FeatureBox from './FeatureBox';
-import { Button } from '../common';
-import { colors } from '../../config/colors';
 import { getVideoId } from '../../utils/helper';
 
 function Welcome(props) {
@@ -14,11 +11,6 @@ function Welcome(props) {
 	let formEnd = null;
 	const [hostLoading, setHostLoading] = useState(false);
 
-	const scrollToForm = () => {
-		if (formEnd) {
-			formEnd.scrollIntoView({ behavior: 'smooth' });
-		}
-	};
 
 	const onHost = async (username, videoUrl) => {
 		// use socket id as room address
@@ -46,7 +38,7 @@ function Welcome(props) {
 
 	return (
 		<React.Fragment>
-			<Topbar />
+			
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
 					<Col md={2}></Col>
@@ -62,13 +54,6 @@ function Welcome(props) {
 		</React.Fragment>
 	);
 }
-
-const IntroMessage = styled.h1`
-	font-weight: 500;
-	margin: 0;
-	padding: 0;
-	font-size: 2.5em;
-`;
 
 const styles = {
 	formContainer: {
