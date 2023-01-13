@@ -47,42 +47,6 @@ function Welcome(props) {
 	return (
 		<React.Fragment>
 			<Topbar />
-			<Container fluid style={{ height: '92vh' }}>
-				{/* topbar is 8vh in height, so (100 - 8) = 92 */}
-				<Row style={{ paddingTop: '80px' }} align='center'>
-					<Hidden xs>
-						<Col xs={2}></Col>
-					</Hidden>
-
-					{/* --------- Intro Message -------- */}
-					<Col xs={12} md={4}>
-						<IntroMessage>
-							Host{' '}
-							<span style={{ color: colors.primaryColor }}>
-								Youtube
-							</span>{' '}
-							Watch Party with Friends
-						</IntroMessage>
-						<Button
-							style={styles.heroButton}
-							onClick={scrollToForm}
-							primary
-						>
-							Get Started
-						</Button>
-					</Col>
-
-					<Col xs={12} md={5}>
-						<img src='hero-banner.svg' alt='' />
-					</Col>
-
-					<Hidden xs>
-						<Col xs={2}></Col>
-					</Hidden>
-				</Row>
-				<FeatureBox />
-			</Container>
-
 			<Container fluid>
 				<Row align='center' style={styles.formContainer}>
 					<Col md={2}></Col>
