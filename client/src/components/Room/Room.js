@@ -111,10 +111,6 @@ function Room(props) {
 		}
 	};
 
-	const alertNotImplemented = () => {
-		alert('Not implemented');
-	};
-
 	return (
 		<React.Fragment>
 			<Topbar />
@@ -132,7 +128,6 @@ function Room(props) {
 						<Col md={4}>
 							<Options
 								onInvite={showInviteModal}
-								alertNotImplemented={alertNotImplemented}
 								onVideoChange={onVideoChange}
 							/>
 							<Chat socket={socket} />

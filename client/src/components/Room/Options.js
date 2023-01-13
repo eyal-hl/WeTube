@@ -19,13 +19,6 @@ const Options = (props) => {
 			>
 				Invite Friends
 			</OptionButton>
-			<OptionButton
-				icon='person-circle'
-				title='Allow only host to control the video'
-				onClick={props.alertNotImplemented}
-			>
-				Host Only
-			</OptionButton>
 		</OptionsContainer>
 	);
 };
