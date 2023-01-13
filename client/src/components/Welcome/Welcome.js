@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { createConnection } from '../../utils/socket';
 import { Container, Row, Col } from 'react-grid-system';
-import styled from 'styled-components';
-import Topbar from '../common/Topbar';
 import StartForm from './StartForm';
 import { getVideoId } from '../../utils/helper';
 
 function Welcome(props) {
 	// const [canRedirectToRoom, setRedirect] = useState(false);
-	let formEnd = null;
 	const [hostLoading, setHostLoading] = useState(false);
 
 
@@ -48,7 +45,6 @@ function Welcome(props) {
 						hostLoading={hostLoading}
 					/>
 					<Col md={2}></Col>
-					<div className='dummy' ref={(el) => (formEnd = el)}></div>
 				</Row>
 			</Container>
 		</React.Fragment>
