@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { colors } from '../../config/colors';
 
 const Footer = (props) => (
-	<StyledFooter>
-		<div>
+	<StyledFooter style={{ backgroundColor: "#333" }} >
+		<div >
 			I want to thank all the people that believed in me along the way
 		</div>
 	</StyledFooter>
