@@ -112,7 +112,7 @@ const Forms = (props) => {
 							id='url'
 							value={joinUrl}
 							onChange={(e) => setJoinUrl(e.target.value)}
-							placeholder='redparty.netlify.app/room/asD2123f'
+							placeholder='localhost/room/asD2123f'
 						/>
 					</Controls>
 				</CustomForm>

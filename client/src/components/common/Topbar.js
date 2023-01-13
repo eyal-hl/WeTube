@@ -8,14 +8,24 @@ const Topbar = (props) => (
 		<Col xs={12}>
 			<StyledBar>
 				<img
-					src='/redparty-logo.svg'
+					src='/YouTube-Icon-Full-Color-Logo.wine.svg'
 					alt='logo'
 					width='auto'
 					height='25px'
 					style={{ marginRight: '8px' }}
 				/>
+				&nbsp;
 				<span style={{ color: colors.primaryColor }}>We</span>
+
 				&nbsp;Tube
+				&nbsp;
+				<img
+					src='/YouTube-Icon-Full-Color-Logo.wine.svg'
+					alt='logo'
+					width='auto'
+					height='25px'
+					style={{ marginRight: '8px' }}
+				/>
 			</StyledBar>
 		</Col>
 	</Row>
