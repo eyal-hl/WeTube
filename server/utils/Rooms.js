@@ -111,6 +111,16 @@ class Rooms {
         return null;
     }
 
+	async getRoom(roomId) {
+        const room = await RoomModel.findOne({ roomId });
+
+        if (room) {
+            return room;
+        }
+
+        return null;
+    }
+
     async showInfo() {
         const rooms = await RoomModel.find();
 
