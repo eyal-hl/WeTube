@@ -20,7 +20,7 @@ const userSchema = new Schema({
 const roomSchema = new Schema({
     roomId: String,
     users: [userSchema],
-    videoURL: String,
+    videoId: String,
 });
 
 const RoomModel = mongoose.model('Room', roomSchema);
@@ -28,25 +28,25 @@ const RoomModel = mongoose.model('Room', roomSchema);
 class Rooms {
     constructor() {}
 
-    async addRoom(roomId, videoURL) {
+    async addRoom(roomId, videoId) {
         const existingRoom = await RoomModel.findOne({ roomId });
 
         if (!existingRoom) {
             const newRoom = new RoomModel({
                 roomId,
                 users: [],
-                videoURL,
+                videoId,
             });
 
             await newRoom.save();
         }
     }
 
-    async setVideoURL(roomId, videoURL) {
+    async setVideoURL(roomId, videoId) {
         const room = await RoomModel.findOne({ roomId });
 
         if (room) {
-            room.videoURL = videoURL;
+            room.videoId = videoId;
             await room.save();
         }
     }

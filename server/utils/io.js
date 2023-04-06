@@ -11,8 +11,8 @@ exports.setupIO = (io) => {
       console.log(`User ${name} just joined in room ${roomId}`);
 
       socket.join(roomId);
-      Rooms.addRoom(roomId, videoId);
-      Rooms.addUser(roomId, name, userId); // data.userId = socket.id
+      await Rooms.addRoom(roomId, videoId);
+      await Rooms.addUser(roomId, name, userId); // data.userId = socket.id
       // Rooms.showInfo();
 
       // emit to all except the joined user
@@ -26,11 +26,11 @@ exports.setupIO = (io) => {
       );
 
       // tell everyone in the room to update their userlist
-      io.to(roomId).emit('updateUserList', Rooms.getUserList(roomId));
+      io.to(roomId).emit('updateUserList', await Rooms.getUserList(roomId));
 
       // if the user joined existing room, tell him about the playing video
       if (!videoId) {
-        const room = Rooms.getRoom(roomId);
+        const room = await Rooms.getRoom(roomId);
         socket.emit(
           'newMessage',
           generateServerMessage('changeVideo', {
@@ -41,7 +41,7 @@ exports.setupIO = (io) => {
     });
 
     socket.on('createMessage', async (message) => {
-      const user = Rooms.getUser(socket.id);
+      const user = await Rooms.getUser(socket.id);
 
       if (user) {
         io.to(user.roomId).emit(
@@ -53,7 +53,7 @@ exports.setupIO = (io) => {
     });
 
     socket.on('videoStateChange', async (data) => {
-      const user = Rooms.getUser(socket.id);
+      const user = await Rooms.getUser(socket.id);
       console.log('videoStateChange trigerred', data);
       // tell others to update the videoState
       socket.broadcast.to(user.roomId).emit(
@@ -71,17 +71,17 @@ exports.setupIO = (io) => {
 
     socket.on('changeVideo', async (data) => {
       const { videoId } = data;
-      const user = Rooms.getUser(socket.id);
+      const user = await Rooms.getUser(socket.id);
       io.to(user.roomId).emit(
         'newMessage',
         generateServerMessage('updateVideoId', { videoId, user })
       );
-      Rooms.setVideoId(user.roomId, videoId);
+      await Rooms.setVideoId(user.roomId, videoId);
     });
 
     socket.on('disconnect', async () => {
       console.log('User disconnected');
-      const user = Rooms.removeUser(socket.id);
+      const user = await Rooms.removeUser(socket.id);
       // Rooms.showInfo();
       console.log(`${user.name} has left`);
 
@@ -97,7 +97,7 @@ exports.setupIO = (io) => {
       // tell everyone in the room to update their userlist
       io.to(user.roomId).emit(
         'updateUserList',
-        Rooms.getUserList(user.roomId)
+        await Rooms.getUserList(user.roomId)
       );
     });
   });
