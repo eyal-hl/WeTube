@@ -1,82 +1,124 @@
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://127.0.0.1/mydb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch((err) => {
+  console.error('Failed to connect to MongoDB', err);
+});
+
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
+    name: String,
+    id: String,
+    roomId: String,
+});
+
+const roomSchema = new Schema({
+    roomId: String,
+    users: [userSchema],
+    videoURL: String,
+});
+
+const RoomModel = mongoose.model('Room', roomSchema);
+
 class Rooms {
-	/* 
-        userId = socket.id
-        roomId = hosts's socket id
-    */
-	constructor() {
-		this.rooms = {}; // { users: [...{name, id, roomId}], videoURL: ''}
-		this.userMap = {}; // maps socket id to rooms
-	}
+    constructor() {}
 
-	addRoom(roomId, videoId) {
-		if (!this.rooms[roomId]) this.rooms[roomId] = { users: [], videoId };
-	}
+    async addRoom(roomId, videoURL) {
+        const existingRoom = await RoomModel.findOne({ roomId });
 
-	setVideoId(roomId, videoId) {
-		if (this.rooms[roomId]) {
-			this.rooms[roomId]['videoId'] = videoId;
-		}
-	}
+        if (!existingRoom) {
+            const newRoom = new RoomModel({
+                roomId,
+                users: [],
+                videoURL,
+            });
 
-	getRoom(roomId) {
-		return this.rooms[roomId];
-	}
+            await newRoom.save();
+        }
+    }
 
-	addUser(roomId, name, userId) {
-		this.rooms[roomId]['users'].push({ name, id: userId, roomId });
-		this.userMap[userId] = roomId;
-	}
+    async setVideoURL(roomId, videoURL) {
+        const room = await RoomModel.findOne({ roomId });
 
-	removeUser(userId) {
-		const roomId = this.userMap[userId];
-		let _user = null;
+        if (room) {
+            room.videoURL = videoURL;
+            await room.save();
+        }
+    }
 
-		if (roomId) {
-			// remove user from the room
-			const users = this.rooms[roomId]['users'];
-			this.rooms[roomId]['users'] = users.filter((user) => {
-				if (user.id === userId) {
-					_user = user;
-				}
-				return user.id !== userId;
-			});
+    async addUser(roomId, name, userId) {
+        const room = await RoomModel.findOne({ roomId });
 
-			// remove user from the user-room mapping
-			delete this.userMap[userId];
+        if (room) {
+            const user = {
+                name,
+                id: userId,
+                roomId,
+            };
 
-			// remove room if applicable
-			this.removeRoom(roomId);
+            room.users.push(user);
+            await room.save();
+        }
+    }
 
-			return _user;
-		}
+    async removeUser(userId) {
+        const room = await RoomModel.findOne({ 'users.id': userId });
 
-		return null;
-	}
+        if (room) {
+            const userIndex = room.users.findIndex((user) => user.id === userId);
+            const user = room.users[userIndex];
 
-	removeRoom(roomId) {
-		if (this.rooms[roomId]['users'].length === 0) delete this.rooms[roomId];
-	}
+            room.users.splice(userIndex, 1);
+            await room.save();
 
-	getUserList(roomId) {
-		const room = this.rooms[roomId];
-		if (room) {
-			return room['users'];
-		}
-	}
+            return user;
+        }
 
-	getUser(userId) {
-		const room = this.userMap[userId];
-		const users = this.getUserList(room);
-		return users.find((user) => user.id === userId);
-	}
+        return null;
+    }
 
-	showInfo() {
-		const rooms = Object.keys(this.rooms);
-		rooms.forEach((roomId) => {
-			console.log(`Room: ${roomId}`);
-			this.rooms[roomId]['users'].forEach((user) => console.log(user));
-		});
-	}
+    async removeRoom(roomId) {
+        const room = await RoomModel.findOne({ roomId });
+
+        if (room) {
+            await RoomModel.deleteOne({ roomId });
+        }
+    }
+
+    async getUserList(roomId) {
+        const room = await RoomModel.findOne({ roomId });
+
+        if (room) {
+            return room.users;
+        }
+
+        return null;
+    }
+
+    async getUser(userId) {
+        const room = await RoomModel.findOne({ 'users.id': userId });
+
+        if (room) {
+            const user = room.users.find((user) => user.id === userId);
+            return user;
+        }
+
+        return null;
+    }
+
+    async showInfo() {
+        const rooms = await RoomModel.find();
+
+        rooms.forEach((room) => {
+            console.log(`Room: ${room.roomId}`);
+            room.users.forEach((user) => console.log(user));
+        });
+    }
 }
 
 module.exports = new Rooms();
