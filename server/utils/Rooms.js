@@ -42,7 +42,7 @@ class Rooms {
         }
     }
 
-    async setVideoURL(roomId, videoId) {
+    async setVideoId(roomId, videoId) {
         const room = await RoomModel.findOne({ roomId });
 
         if (room) {
